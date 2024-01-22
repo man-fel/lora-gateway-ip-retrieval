@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Address Display</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <button @click="getIpAddress">Get IP Address</button>
+        <div v-if="ipAddress !== 'Not available'">
+            <p>Your IP Address is: {{ ipAddress }}</p>
+        </div>
+        <div v-else>
+            <p>IP Address not available</p>
+        </div>
+    </div>
+
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                ipAddress: null
+            },
+            methods: {
+                getIpAddress() {
+                    axios.get("http://localhost:5000/get_ip_address")
+                        .then(response => {
+                            this.ipAddress = response.data.ip_address;
+                        })
+                        .catch(error => {
+                            console.error("Error fetching IP address:", error);
+                        });
+                }
+            }
+        });
+    </script>
+</body>
+</html>
